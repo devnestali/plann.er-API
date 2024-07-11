@@ -10,7 +10,7 @@ export async function confirmTrip(app: FastifyInstance) {
         tripId: z.string().uuid(),
       })
     }
-  }, async (request) => {
+  }, async (request, reply) => {
     const { tripId } = request.params;
 
     const trip = await prisma.trip.findUnique({
@@ -24,8 +24,13 @@ export async function confirmTrip(app: FastifyInstance) {
     }
 
     if(trip.is_confirmed) {
-      throw new Error('Trip already confirmed.')
+      return reply.redirect(`http://localhost:3000/trips/${tripId}`)
     }
+
+    await prisma.trip.update({
+      where: { id: tripId },
+      data: { is_confirmed: true},
+    })
 
     return { tripId: request.params.tripId }
   })
