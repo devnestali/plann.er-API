@@ -37,7 +37,15 @@ export async function createActivity(app: FastifyInstance) {
       throw new Error('Invalid activity date.')
     }
 
+    const activity = await prisma.activity.create({
+      data: {
+        title,
+        occurs_at,
+        tripId: tripId,
+      }
+    })
 
-    return { tripId: trip.id }
+
+    return { activityId: activity.id }
   })
 }
