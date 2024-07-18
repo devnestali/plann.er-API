@@ -25,9 +25,6 @@ export async function createInvite(app: FastifyInstance) {
 
       const trip = await prisma.trip.findUnique({
         where: { id: tripId },
-        include: {
-          links: true,
-        },
       })
 
       if (!trip) {

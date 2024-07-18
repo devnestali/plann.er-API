@@ -23,11 +23,11 @@ export async function updateTrip(app: FastifyInstance) {
     const { destination, starts_at, ends_at } = request.body;
 
     const trip = await prisma.trip.findUnique({
-      where: { id: tripId },
+      where: { id: tripId }
     })
 
     if (!trip) {
-      throw new ClientError('trip not found');
+      throw new ClientError('Trip not found');
     }
 
     if (dayjs(starts_at).isBefore(new Date())) {
